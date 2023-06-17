@@ -16,6 +16,15 @@ export default function News(props) {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
+    const updateNews = async ()=> {
+        setLoading(true);
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setArticles(data.articles);
+        setLoading(false);
+    }
+
     useEffect(() => {
         const fetchArticles = async () => {
             try {
@@ -38,25 +47,25 @@ export default function News(props) {
     }, [props.country, props.pageSize, props.category]);
 
     const handlePrevClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page - 1}`;
         setLoading(true);
-        let data = await fetch(url);
-        let parsedData = await data.json();
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page - 1}`;
+        let response = await fetch(url);
+        let data = await response.json();
+        setArticles(data.articles)
+        setLoading(false);
 
         setPage(page - 1);
-        setArticles(parsedData.articles)
-        setLoading(false);
     }
 
     const handleNextClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page + 1}`;
         setLoading(true);
-        let data = await fetch(url);
-        let parsedData = await data.json();
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page + 1}`;
+        let response = await fetch(url);
+        let data = await response.json();
+        setArticles(data.articles)
+        setLoading(false);
 
         setPage(page + 1);
-        setArticles(parsedData.articles)
-        setLoading(false);
     }
 
     return (
@@ -71,7 +80,10 @@ export default function News(props) {
                                 title={element.title}
                                 description={element.description}
                                 imgUrl={element.urlToImage}
-                                newsUrl={element.url} />
+                                newsUrl={element.url}
+                                author={element.author}
+                                date={element.publishedAt}
+                                source={element.source.name} />
                         </div>
                     )
                 })}
