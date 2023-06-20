@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export default function News(props) {
     News.defaultProps = {
         country: "in",
-        pageSize: 12,
+        pageSize: 9,
         category: "general"
     }
 
@@ -18,9 +18,10 @@ export default function News(props) {
 
     const updateNews = async ()=> {
         setLoading(true);
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}`;
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=ac20c74289024f23859d8e31639e0545&pageSize=${props.pageSize}&page=${page}`;
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data);
         setArticles(data.articles);
         setLoading(false);
     }
@@ -29,11 +30,13 @@ export default function News(props) {
         const fetchArticles = async () => {
             try {
                 setLoading(true);
-                const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}`;
+                const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=ac20c74289024f23859d8e31639e0545&pageSize=${props.pageSize}`;
                 const response = await fetch(url);
                 const data = await response.json();
+                console.log(data);
                 setArticles(data.articles);
                 setLoading(false);
+                console.log("effect " + page);
 
                 const totalPages = Math.ceil(data.totalResults / props.pageSize);
                 setTotalPages(totalPages);
@@ -44,33 +47,36 @@ export default function News(props) {
             }
         };
         fetchArticles();
-    }, [props.country, props.pageSize, props.category]);
+    }, [props.country, props.category, props.pageSize, page]);
 
-    const handlePrevClick = async () => {
-        setLoading(true);
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page - 1}`;
-        let response = await fetch(url);
-        let data = await response.json();
-        setArticles(data.articles)
-        setLoading(false);
-
+    const handlePrevClick = () => {
+        // setLoading(true);
+        // let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=ac20c74289024f23859d8e31639e0545&pageSize=${props.pageSize}&page=${page - 1}`;
+        // let response = await fetch(url);
+        // let data = await response.json();
+        // setArticles(data.articles)
+        // setLoading(false);
         setPage(page - 1);
+        console.log("prev " +page);
+        updateNews();
     }
 
-    const handleNextClick = async () => {
-        setLoading(true);
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=3aa85b8e1906432bbf4b9bdebe9f3d04&pageSize=${props.pageSize}&page=${page + 1}`;
-        let response = await fetch(url);
-        let data = await response.json();
-        setArticles(data.articles)
-        setLoading(false);
+    const handleNextClick = () => {
+        // setLoading(true);
+        // let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=ac20c74289024f23859d8e31639e0545&pageSize=${props.pageSize}&page=${page + 1}`;
+        // let response = await fetch(url);
+        // let data = await response.json();
+        // setArticles(data.articles)
+        // setLoading(false);
 
         setPage(page + 1);
+        console.log("next" +page);
+        updateNews();
     }
 
     return (
         <div className="container my-3">
-            <h1 className="my-3 text-center">NewsMonkey - Top Headlines</h1>
+            <h1 className="my-3 text-center">NewsMonkey - Top {props.category} Headlines</h1>
             {loading && <Spinner />}
             <div className="row">
                 {!loading && articles.map((element) => {

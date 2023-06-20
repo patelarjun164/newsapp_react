@@ -5,4 +5,7 @@
 <Route path="/" element={<News pageSize={6} country="in" category="sports" />} />
 <Route path="/" element={<News pageSize={6} country="in" category="technology" />} />
 
+// 3aa85b8e1906432bbf4b9bdebe9f3d04
+// ac20c74289024f23859d8e31639e0545
+
 <Route path="/" element={<News pageSize={6} country="in" category="general" />} /> */}
