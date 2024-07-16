@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import News from './components/News';
+import Navbar from './komponent/NavigationBar';
+import News from './komponent/News';
 import LoadingBar from 'react-top-loading-bar';
 import {
   BrowserRouter,
