@@ -11,34 +11,37 @@ export default function News(props) {
         pageSize: 9,
         category: "general"
     }
-
+    
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(1);
     // const [totalPages, setTotalPages] = useState(0);
-    const [totalResults, setTotalResults] = useState(0);
+    const [totalResults, setTotalResults] = useState(props.hrdsrc.totalResults);
 
     const updateNews = async () => {
         props.changeProgress(10);
         setPage(1);
         setLoading(true);
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
-        const response = await fetch(url);
+        // const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
+        // const response = await fetch(url);
+        await new Promise(resolve => setTimeout(resolve, 500));
         props.changeProgress(30);
-        const data = await response.json();
+        // const data = await response.json();
+        await new Promise(resolve => setTimeout(resolve, 500));
         props.changeProgress(70);
-        console.log(data);
-        setArticles(data.articles);
-        setTotalResults(data.totalResults)
+        // console.log(data);
+        setArticles(props.hrdsrc.articles);
+        setTotalResults(props.hrdsrc.totalResults)
+
         props.changeProgress(100);
         setLoading(false);
-        console.log("effect " + page);
 
         // const totalPages = Math.ceil(data.totalResults / props.pageSize);
         // setTotalPages(totalPages);
     }
 
-    
+
 
     useEffect(() => {
         updateNews();
@@ -70,18 +73,18 @@ export default function News(props) {
     //     updateNews();
     // }
     const fetchMoreData = async () => {
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey} &pageSize=${props.pageSize}&page=${page + 1}`;
-        setPage(page + 1);
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log(data);
-        setArticles(articles.concat(data.articles));
-        console.log("fetchmore " + page);
+        // const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey} &pageSize=${props.pageSize}&page=${page + 1}`;
+        // setPage(page + 1);
+        // const response = await fetch(url);
+        // const data = await response.json();
+        // console.log(data);
+        // setArticles(articles.concat(data.articles));
+        // console.log("fetchmore " + page);
     };
 
     return (
         <>
-            <h1 className="text-center" style={{marginTop:"70px", marginBottom: "20px"}}>NewsMonkey - Top {props.category} Headlines</h1>
+            <h1 className="text-center" style={{ marginTop: "70px", marginBottom: "20px" }}>NewsMonkey - Top {props.category} Headlines</h1>
             {loading && <Spinner />}
 
             <InfiniteScroll
